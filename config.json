@@ -1,0 +1,5 @@
+{
+    "monitored_paths": [
+        "./test_directory"
+    ],
+}
