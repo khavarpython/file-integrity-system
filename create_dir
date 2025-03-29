@@ -1,0 +1,89 @@
+def create_test_directory():
+    """Create a test directory with files for testing the FIM system."""
+    # Create test directory if it doesn't exist
+    test_dir = "test_directory"
+    if not os.path.exists(test_dir):
+        os.makedirs(test_dir)
+        print(f"Created test directory: {test_dir}")
+
+    # Create subdirectories
+    subdirs = ["configs", "logs", "data"]
+    for subdir in subdirs:
+        subdir_path = os.path.join(test_dir, subdir)
+        if not os.path.exists(subdir_path):
+            os.makedirs(subdir_path)
+            print(f"Created subdirectory: {subdir_path}")
+
+    # Create sample configuration files
+    config_files = [
+        {"name": "database.cfg",
+         "content": "DB_HOST=localhost\nDB_PORT=3306\nDB_USER=safebank\nDB_PASS=securepassword\n"},
+        {"name": "api.cfg", "content": "API_KEY=sk_test_12345\nAPI_TIMEOUT=30\nAPI_VERSION=v2\n"},
+        {"name": "security.cfg", "content": "ENCRYPTION=AES256\nSSL_ENABLED=true\nFIREWALL_ACTIVE=true\n"}
+    ]
+
+    for config in config_files:
+        file_path = os.path.join(test_dir, "configs", config["name"])
+        with open(file_path, "w") as f:
+            f.write(config["content"])
+        print(f"Created config file: {file_path}")
+
+    # Create sample log files
+    log_files = [
+        {"name": "application.log", "lines": 20},
+        {"name": "transactions.log", "lines": 15},
+        {"name": "security.log", "lines": 10}
+    ]
+
+    for log in log_files:
+        file_path = os.path.join(test_dir, "logs", log["name"])
+        with open(file_path, "w") as f:
+            for i in range(log["lines"]):
+                timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+                level = random.choice(["INFO", "DEBUG", "WARNING", "ERROR"])
+                message = ''.join(random.choices(string.ascii_letters + string.digits, k=30))
+                f.write(f"{timestamp} [{level}] - {message}\n")
+        print(f"Created log file: {file_path}")
+
+    # Create sample data files
+    data_files = [
+        {"name": "customers.csv", "rows": 10},
+        {"name": "transactions.csv", "rows": 15},
+        {"name": "accounts.csv", "rows": 8}
+    ]
+
+    for data in data_files:
+        file_path = os.path.join(test_dir, "data", data["name"])
+        with open(file_path, "w") as f:
+            # Write header
+            if "customers" in data["name"]:
+                f.write("id,name,email,account_number,balance\n")
+                for i in range(data["rows"]):
+                    customer_id = i + 1
+                    name = f"Customer {customer_id}"
+                    email = f"customer{customer_id}@example.com"
+                    account = ''.join(random.choices(string.digits, k=10))
+                    balance = round(random.uniform(1000, 50000), 2)
+                    f.write(f"{customer_id},{name},{email},{account},{balance}\n")
+            elif "transactions" in data["name"]:
+                f.write("id,date,from_account,to_account,amount,status\n")
+                for i in range(data["rows"]):
+                    trans_id = i + 1
+                    date = time.strftime("%Y-%m-%d")
+                    from_acc = ''.join(random.choices(string.digits, k=10))
+                    to_acc = ''.join(random.choices(string.digits, k=10))
+                    amount = round(random.uniform(10, 5000), 2)
+                    status = random.choice(["completed", "pending", "failed"])
+                    f.write(f"{trans_id},{date},{from_acc},{to_acc},{amount},{status}\n")
+            elif "accounts" in data["name"]:
+                f.write("account_number,type,status,created_date,last_activity\n")
+                for i in range(data["rows"]):
+                    account = ''.join(random.choices(string.digits, k=10))
+                    acc_type = random.choice(["savings", "checking", "investment"])
+                    status = random.choice(["active", "inactive", "suspended"])
+                    created = time.strftime("%Y-%m-%d", time.gmtime(time.time() - random.randint(0, 365 * 24 * 3600)))
+                    activity = time.strftime("%Y-%m-%d", time.gmtime(time.time() - random.randint(0, 30 * 24 * 3600)))
+                    f.write(f"{account},{acc_type},{status},{created},{activity}\n")
+        print(f"Created data file: {file_path}")
+
+    print("\nTest environment setup complete. Use these files to test the FIM system.")
