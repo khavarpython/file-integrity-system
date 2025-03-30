@@ -72,7 +72,13 @@ class FIMAlertManager:
             config['AlertLevels'] = {
                 'file_modified': 'MEDIUM',
                 'file_created': 'LOW',
-                'file_deleted': 'HIGH'
+                'file_deleted': 'HIGH',
+                'modified': 'MEDIUM',
+                'created': 'LOW',
+                'deleted': 'HIGH',
+                'permission_changed': 'HIGH',
+                'ownership_changed': 'HIGH',
+                'moved': 'MEDIUM'
             }
             
             # Write default config to file
@@ -101,9 +107,19 @@ class FIMAlertManager:
         if not self._should_send_alert(file_path):
             logging.info(f"Alert throttled for {file_path}")
             return False
-            
-        # Get alert level based on event type
-        alert_level = self.config.get('AlertLevels', event_type.lower(), fallback='MEDIUM')
+        
+        # Try multiple variations of the event type to find a matching alert level
+        # First try the exact event_type
+        event_type_lower = event_type.lower()
+        alert_level = self.config.get('AlertLevels', event_type_lower, fallback=None)
+        
+        # If that fails, try with 'file_' prefix
+        if alert_level is None:
+            prefixed_event_type = f"file_{event_type_lower}"
+            alert_level = self.config.get('AlertLevels', prefixed_event_type, fallback='MEDIUM')
+        
+        # Log the alert level being used
+        logging.info(f"Using alert level {alert_level} for event type {event_type}")
         
         # Create alert message
         subject = f"FIM ALERT [{alert_level}]: File {event_type} - {os.path.basename(file_path)}"
@@ -230,6 +246,14 @@ def handle_watchdog_event(event_type, file_path, old_hash=None, new_hash=None):
         details = {
             "Previous Hash": old_hash,
             "Current Hash": new_hash
+        }
+    elif old_hash and not new_hash:
+        details = {
+            "Previous Hash": old_hash
+        }
+    elif new_hash and not old_hash:
+        details = {
+            "New Hash": new_hash
         }
     
     alert_manager.send_alert(event_type, file_path, details)

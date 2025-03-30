@@ -12,3 +12,19 @@
 2025-03-28 21:29:45,966 - INFO - Alert sent for modified on /etc/passwd
 2025-03-28 21:31:34,356 - INFO - FIM Alert Manager initialized
 2025-03-28 21:31:36,693 - INFO - Alert sent for modified on /etc/passwd
+2025-03-30 16:59:19,272 - INFO - FIM Alert Manager initialized
+2025-03-30 16:59:22,225 - INFO - Alert sent for deleted on /etc/passwd
+2025-03-30 17:00:21,126 - INFO - FIM Alert Manager initialized
+2025-03-30 17:00:23,965 - INFO - Alert sent for deleted on /etc/passwd
+2025-03-30 17:03:26,289 - INFO - FIM Alert Manager initialized
+2025-03-30 17:03:26,289 - INFO - Using alert level HIGH for event type deleted
+2025-03-30 17:03:28,684 - INFO - Alert sent for deleted on /etc/passwd
+2025-03-30 17:04:16,429 - INFO - FIM Alert Manager initialized
+2025-03-30 17:04:16,430 - INFO - Using alert level LOW for event type created
+2025-03-30 17:04:19,326 - INFO - Alert sent for created on /etc/passwd
+2025-03-30 17:04:40,343 - INFO - FIM Alert Manager initialized
+2025-03-30 17:04:40,344 - INFO - Using alert level LOW for event type file_created
+2025-03-30 17:04:43,239 - INFO - Alert sent for file_created on /etc/passwd
+2025-03-30 17:05:24,464 - INFO - FIM Alert Manager initialized
+2025-03-30 17:05:24,465 - INFO - Using alert level HIGH for event type deleted
+2025-03-30 17:05:27,279 - INFO - Alert sent for deleted on /etc/passwd

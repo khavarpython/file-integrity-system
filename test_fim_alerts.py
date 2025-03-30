@@ -24,7 +24,7 @@ def main():
     parser.add_argument(
         "--event-type", 
         choices=["modified", "created", "deleted", "permission_changed", "ownership_changed", "moved"],
-        default="modified",
+        default="deleted",
         help="Type of file event to simulate"
     )
     parser.add_argument(
